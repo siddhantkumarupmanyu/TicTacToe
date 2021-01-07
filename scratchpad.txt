@@ -1,0 +1,26 @@
+Game Class: set all the values and creates immutables, have newGame() function/method
+
+
+
+Play class: takes in player1, player2, board, renderer
+-play asks player for move
+    -player takes input from user and returns move
+-play checks weather it is a valid move
+    -if not, again ask player for move -> recheck ->...
+-check if any player has won
+    -if so give that info to the renderer
+-call renderer for drawing the board
+
+
+Renderer: have setBoard method for setting current board
+-maps given Mark to Display mark(img, string, etc)
+-draws the appropriate things (who won, lose, etc) on screen
+
+
+
+---------
+Additional features
+
+total games played
+
+how many won etc..
