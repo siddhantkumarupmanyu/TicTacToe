@@ -8,12 +8,10 @@ class Mark(Enum):
 
 
 class Cell:
-    _value: Mark = Mark.DEFAULT
-
-    _isEmpty = True
 
     def __init__(self):
-        pass
+        self._value: Mark = Mark.DEFAULT
+        self._isEmpty = True
 
     def setValue(self, value: Mark):
         if not self._isEmpty:

@@ -8,14 +8,14 @@ from Cell import Cell, Mark
 
 # board class should be immutable
 class Board:
-    _matrix: List[List[Cell]]
-    _defaultCell: Cell = Cell()
-
-    # I think winning related stuff should be in different class. I thing Board is doing more than one thing
-    _winner: Mark = None
-    _winningCells: List[Cell] = None
 
     def __init__(self):
+        self._matrix: List[List[Cell]]
+        self._defaultCell: Cell = Cell()
+
+        # I think winning related stuff should be in different class. I thing Board is doing more than one thing
+        self._winner: Mark
+        self._winningCells: List[Cell] = list()
         self.createMatrix()
 
     def createMatrix(self):
@@ -34,7 +34,7 @@ class Board:
         # # TODO: add fail fast for x & y > 3
         return self._matrix[x][y].getValue()
 
-    def winner(self):
+    def winner(self) -> Mark:
         if self._winner is None:
             if not self.gameOver():  # # TODO: replace with fail fast code
                 raise Exception("Game Is not over")

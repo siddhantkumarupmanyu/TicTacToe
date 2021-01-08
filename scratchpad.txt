@@ -16,6 +16,8 @@ Renderer: have setBoard method for setting current board
 -maps given Mark to Display mark(img, string, etc)
 -draws the appropriate things (who won, lose, etc) on screen
 
+---------
+Can use finite state machine in Play class but right now it only increases the complexity.
 
 
 ---------

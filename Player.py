@@ -10,8 +10,6 @@ class PlayerInputInterface:
 
 
 class Player:
-    _cellValue: Mark = None
-    _playerInput: PlayerInputInterface = None
 
     def __init__(self, cellValue: Mark, playerInput: PlayerInputInterface):
         self._cellValue = cellValue
