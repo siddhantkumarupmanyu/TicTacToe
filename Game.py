@@ -41,7 +41,7 @@ class ConsoleRenderer(Renderer):
     # todo refactor this
 
     def display(self, board: Board, nextMove: Player):
-        os.system('cls' if os.name == 'nt' else 'clear')
+        os.system('clear')
         print(
             f"{self._getStringForMark(board.getValueAt(0, 0))} | {self._getStringForMark(board.getValueAt(0, 1))} | {self._getStringForMark(board.getValueAt(0, 2))} \n")
         print(
@@ -49,9 +49,19 @@ class ConsoleRenderer(Renderer):
         print(
             f"{self._getStringForMark(board.getValueAt(2, 0))} | {self._getStringForMark(board.getValueAt(2, 1))} | {self._getStringForMark(board.getValueAt(2, 2))} \n")
 
+    # todo:  refactor the code and remove as many hacks as possible; it does not matter in this class but still
     def won(self, board: Board, player: Player):
-        # todo: add strike through here for winning cells
-        self.display(board, player)
+        os.system('clear')
+        winningCells = board.getWinningCells()
+        os.system(
+            f'echo "{self._getFormattedStringFor(board, 0, 0, winningCells)} | {self._getFormattedStringFor(board, 0, 1, winningCells)} | {self._getFormattedStringFor(board, 0, 2, winningCells)}"')
+        os.system('echo ""')
+        os.system(
+            f'echo "{self._getFormattedStringFor(board, 1, 0, winningCells)} | {self._getFormattedStringFor(board, 1, 1, winningCells)} | {self._getFormattedStringFor(board, 1, 2, winningCells)}"')
+        os.system('echo ""')
+        os.system(
+            f'echo "{self._getFormattedStringFor(board, 2, 0, winningCells)} | {self._getFormattedStringFor(board, 2, 1, winningCells)} | {self._getFormattedStringFor(board, 2, 2, winningCells)}"')
+        os.system('echo ""')
         print(f"Player {player.getMark()} has won the game!!!!\n")
 
     def draw(self, board: Board, player1: Player, player2: Player):
@@ -59,6 +69,12 @@ class ConsoleRenderer(Renderer):
 
     def invalidMove(self, player: Player, board: Board, move: Tuple[int, int]):
         print("You have entered a invalid move, please re-enter.")
+
+    def _getFormattedStringFor(self, board, x: int, y: int, winningCells: List[Tuple[int, int]]) -> str:
+        if (x, y) in winningCells:
+            return f"\e[7m{self._getStringForMark(board.getValueAt(x, y))}\e[27m"
+        else:
+            return self._getStringForMark(board.getValueAt(x, y))
 
     def _getStringForMark(self, mark: Mark) -> str:
         if mark == Mark.CROSS:
