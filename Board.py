@@ -1,6 +1,7 @@
-from typing import List
+from typing import List, Tuple
 
 from Cell import Cell, Mark
+
 
 # CROSS = "X"
 # CIRCLE = "O"
@@ -10,12 +11,10 @@ from Cell import Cell, Mark
 class Board:
 
     def __init__(self):
-        self._matrix: List[List[Cell]]
+        self._matrix: List[List[Cell]] = list()
         self._defaultCell: Cell = Cell()
-
-        # I think winning related stuff should be in different class. I thing Board is doing more than one thing
-        self._winner: Mark
-        self._winningCells: List[Cell] = list()
+        self._winner: Mark = Mark.DEFAULT
+        self._winningCells: List[Tuple[int, int]] = list()
         self.createMatrix()
 
     def createMatrix(self):
@@ -40,7 +39,7 @@ class Board:
                 raise Exception("Game Is not over")
         return self._winner
 
-    def getWinningCells(self) -> List[Cell]:
+    def getWinningCells(self) -> List[Tuple[int, int]]:
         if self._winningCells is None:
             if not self.gameOver():  # # TODO: replace with fail fast code
                 raise Exception("Game Is not over")
@@ -72,22 +71,22 @@ class Board:
 
     def _checkIfRowCellsAreEqual(self, rowNum: int) -> bool:
         if self._defaultCell != self._matrix[rowNum][0] == self._matrix[rowNum][1] == self._matrix[rowNum][2]:
-            self._winningCells = [self._matrix[rowNum][0], self._matrix[rowNum][1], self._matrix[rowNum][2]]
+            self._winningCells = [(rowNum, 0), (rowNum, 1), (rowNum, 2)]
             return True
         return False
 
     def _checkIfColumnCellsAreEqual(self, colNum: int) -> bool:
         if self._defaultCell != self._matrix[0][colNum] == self._matrix[1][colNum] == self._matrix[2][colNum]:
-            self._winningCells = [self._matrix[0][colNum], self._matrix[1][colNum], self._matrix[2][colNum]]
+            self._winningCells = [(0, colNum), (1, colNum), (2, colNum)]
             return True
         return False
 
     def _checkIfDiagonalCellsEqual(self) -> bool:
         if self._defaultCell != self._matrix[0][0] == self._matrix[1][1] == self._matrix[2][2]:
-            self._winningCells = [self._matrix[0][0], self._matrix[1][1], self._matrix[2][2]]
+            self._winningCells = [(0, 0), (1, 1), (2, 2)]
             return True
         elif self._defaultCell != self._matrix[1][2] == self._matrix[1][1] == self._matrix[2][1]:
-            self._winningCells = [self._matrix[1][2], self._matrix[1][1], self._matrix[2][1]]
+            self._winningCells = [(1, 2), (1, 1), (2, 1)]
             return True
         return False
 

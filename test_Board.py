@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 from Board import Board
-from Cell import Mark, Cell
+from Cell import Mark
 
 
 class TestBoard(TestCase):
@@ -89,10 +89,7 @@ class TestBoard(TestCase):
         board.setValueAt(1, 1, Mark.CROSS)
         board.setValueAt(1, 2, Mark.CROSS)
 
-        winningCells = [Cell(), Cell(), Cell()]
-        winningCells[0].setValue(Mark.CROSS)
-        winningCells[1].setValue(Mark.CROSS)
-        winningCells[2].setValue(Mark.CROSS)
+        winningCells = [(1, 0), (1, 1), (1, 2)]
 
         self.assertTrue(board.gameOver())
         self.assertListEqual(winningCells, board.getWinningCells())
@@ -103,10 +100,7 @@ class TestBoard(TestCase):
         board.setValueAt(2, 1, Mark.CROSS)
         board.setValueAt(0, 1, Mark.CROSS)
 
-        winningCells = [Cell(), Cell(), Cell()]
-        winningCells[0].setValue(Mark.CROSS)
-        winningCells[1].setValue(Mark.CROSS)
-        winningCells[2].setValue(Mark.CROSS)
+        winningCells = [(0, 1), (1, 1), (2, 1)]
 
         self.assertTrue(board.gameOver())
         self.assertListEqual(winningCells, board.getWinningCells())

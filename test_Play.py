@@ -1,4 +1,4 @@
-from typing import Tuple, List
+from typing import Tuple, List, Optional
 from unittest import TestCase
 
 from Board import Board
@@ -11,19 +11,19 @@ from Renderer import Renderer
 class TestPlayRenderer(Renderer):
 
     def __init__(self):
-        self._isDraw = False
-        self._winner = None
-        self._drawingPlayers = None
+        self.isDraw = False
+        self.winner: Optional[Player] = None
+        self.drawingPlayers: Tuple[Player, Player] = tuple()
 
     def display(self, board: Board, nextMove: Player):
         super().display(board, nextMove)
 
     def won(self, board: Board, player: Player):
-        self._winner = player
+        self.winner = player
 
     def draw(self, board: Board, player1: Player, player2: Player):
-        self._isDraw = True
-        self._drawingPlayers = (player1, player2)
+        self.isDraw = True
+        self.drawingPlayers = (player1, player2)
 
 
 class TestPlayPlayerInput(PlayerInputInterface):
@@ -74,8 +74,61 @@ class TestPlay(TestCase):
 
         self.play.start()
 
-        self.assertTrue(self.testRenderer._isDraw)
-        self.assertTupleEqual((self.player1, self.player2), self.testRenderer._drawingPlayers)
+        self.assertTrue(self.testRenderer.isDraw)
+        self.assertTupleEqual((self.player1, self.player2), self.testRenderer.drawingPlayers)
 
     def test_InvalidValue(self):
-        pass
+        self.testInput1.setMove(0, 0)
+        self.testInput2.setMove(0, 0)
+        self.testInput2.setMove(1, 1)
+
+        self.testInput1.setMove(2, 0)
+        self.testInput2.setMove(1, 0)
+
+        self.testInput1.setMove(1, 0)
+        self.testInput1.setMove(1, 2)
+        self.testInput2.setMove(0, 1)
+
+        self.testInput1.setMove(2, 1)
+        self.testInput2.setMove(2, 2)
+
+        self.testInput1.setMove(0, 2)
+
+        self.play.start()
+
+        self.assertEqual(Mark.CROSS, self.board.getValueAt(0, 0))
+        self.assertEqual(Mark.CIRCLE, self.board.getValueAt(1, 0))
+
+    def test_CircleWonGame(self):
+        self.testInput1.setMove(0, 0)
+        self.testInput2.setMove(1, 1)
+
+        self.testInput1.setMove(2, 0)
+        self.testInput2.setMove(1, 0)
+
+        self.testInput1.setMove(0, 2)
+        self.testInput2.setMove(1, 2)
+
+        self.play.start()
+
+        self.assertTupleEqual(tuple(), self.testRenderer.drawingPlayers)
+        self.assertEqual(Mark.CIRCLE, self.testRenderer.winner.getMark())
+        self.assertListEqual([(1, 0), (1, 1), (1, 2)], self.board.getWinningCells())
+
+    def test_CrossWonGame(self):
+        self.testInput1.setMove(0, 0)
+        self.testInput2.setMove(1, 1)
+
+        self.testInput1.setMove(2, 2)
+        self.testInput2.setMove(2, 1)
+
+        self.testInput1.setMove(0, 2)
+        self.testInput2.setMove(1, 0)
+
+        self.testInput1.setMove(0, 1)
+
+        self.play.start()
+
+        self.assertTupleEqual(tuple(), self.testRenderer.drawingPlayers)
+        self.assertEqual(Mark.CROSS, self.testRenderer.winner.getMark())
+        self.assertListEqual([(0, 0), (0, 1), (0, 2)], self.board.getWinningCells())

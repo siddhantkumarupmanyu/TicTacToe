@@ -1,7 +1,6 @@
 Game Class: set all the values and creates immutables, have newGame() function/method
 
 
-
 Play class: takes in player1, player2, board, renderer
 -play asks player for move
     -player takes input from user and returns move
@@ -10,6 +9,9 @@ Play class: takes in player1, player2, board, renderer
 -check if any player has won
     -if so give that info to the renderer
 -call renderer for drawing the board
+
+Player1 goes always first in play class. but it a immutable class, therefore when creating new play, game class
+can create play class with players interchanged, therefore changing the turn of players
 
 
 Renderer: have setBoard method for setting current board
@@ -23,6 +25,6 @@ Can use finite state machine in Play class but right now it only increases the c
 ---------
 Additional features
 
-total games played
+total games played -> game class
 
-how many won etc..
+how many won etc.. -> player class
