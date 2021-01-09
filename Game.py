@@ -76,7 +76,8 @@ class ConsoleRenderer(Renderer):
         else:
             return self._getStringForMark(board.getValueAt(x, y))
 
-    def _getStringForMark(self, mark: Mark) -> str:
+    @staticmethod
+    def _getStringForMark(mark: Mark) -> str:
         if mark == Mark.CROSS:
             return "X"
         elif mark == Mark.CIRCLE:
