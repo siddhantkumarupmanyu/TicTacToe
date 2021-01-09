@@ -17,6 +17,7 @@ class Play:
 
     def start(self):
         # TODO refactor this into smaller methods/ functions
+        self._renderer.display(self._board, self._player1)
         while True:
             p1X, p1Y = self._player1.getMove()
             while not self._validMove(p1X, p1Y):
@@ -25,11 +26,11 @@ class Play:
 
             self._board.setValueAt(p1X, p1Y, self._player1.getMark())
 
+            self._renderer.display(self._board, self._player2)
+
             if self._board.gameOver():
                 self._gameOver()
                 break
-
-            self._renderer.display(self._board, self._player2)
 
             p2X, p2Y = self._player2.getMove()
             while not self._validMove(p2X, p2Y):
@@ -37,11 +38,11 @@ class Play:
                 p2X, p2Y = self._player2.getMove()
             self._board.setValueAt(p2X, p2Y, self._player2.getMark())
 
+            self._renderer.display(self._board, self._player1)
+
             if self._board.gameOver():
                 self._gameOver()
                 break
-
-            self._renderer.display(self._board, self._player1)
 
     def _gameOver(self):
         winnerMark = self._board.winner()
@@ -59,6 +60,8 @@ class Play:
         self._renderer.won(self._board, winner)
 
     def _validMove(self, x: int, y: int):
+        if x > 2 or y > 2:
+            return False
         if self._board.getValueAt(x, y) != Mark.DEFAULT:
             return False
         return True

@@ -3,10 +3,6 @@ from typing import List, Tuple
 from Cell import Cell, Mark
 
 
-# CROSS = "X"
-# CIRCLE = "O"
-
-
 # board class should be immutable
 class Board:
 

@@ -22,6 +22,10 @@ Renderer: have setBoard method for setting current board
 Can use finite state machine in Play class but right now it only increases the complexity.
 
 
+Should playerinterfaceInput know about player??? -> It could then display for which player it is asking the move for..??
+
+no need of nextPlayer in display fun in renderer
+
 ---------
 Additional features
 
