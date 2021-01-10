@@ -35,6 +35,5 @@ how many won etc.. -> player class
 
 
 ---------
-Spikes
-python-prompt-toolkit
-    -https://github.com/prompt-toolkit/python-prompt-toolkit
+will make the ui good later,
+now just let's just make it work
