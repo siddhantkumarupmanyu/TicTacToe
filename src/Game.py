@@ -64,7 +64,7 @@ class ConsoleRenderer(Renderer):
         os.system('echo ""')
         print(f"Player {player.getMark()} has won the game!!!!\n")
 
-    def draw(self, board: Board, player1: Player, player2: Player):
+    def tie(self, board: Board, player1: Player, player2: Player):
         print(f"Tie!!!!\n")
 
     def invalidMove(self, player: Player, board: Board, move: Tuple[int, int]):

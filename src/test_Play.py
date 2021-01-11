@@ -21,7 +21,7 @@ class TestPlayRenderer(Renderer):
     def won(self, board: Board, player: Player):
         self.winner = player
 
-    def draw(self, board: Board, player1: Player, player2: Player):
+    def tie(self, board: Board, player1: Player, player2: Player):
         self.isDraw = True
         self.drawingPlayers = (player1, player2)
 

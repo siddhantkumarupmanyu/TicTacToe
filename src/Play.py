@@ -49,7 +49,7 @@ class Play:
         winner = None
 
         if winnerMark == Mark.DEFAULT:
-            self._renderer.draw(self._board, self._player1, self._player2)
+            self._renderer.tie(self._board, self._player1, self._player2)
             return
 
         if self._player1.getMark() == winnerMark:

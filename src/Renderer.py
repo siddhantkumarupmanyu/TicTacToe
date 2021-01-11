@@ -11,7 +11,7 @@ class Renderer:
     def won(self, board: Board, player: Player):
         pass
 
-    def draw(self, board: Board, player1: Player, player2: Player):
+    def tie(self, board: Board, player1: Player, player2: Player):
         pass
 
     def invalidMove(self, player: Player, board: Board, move: Tuple[int, int]):
