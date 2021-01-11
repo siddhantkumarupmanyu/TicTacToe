@@ -1,3 +1,7 @@
+refactor the whole project and implement better architecture
+
+---------
+
 Game Class: set all the values and creates immutables, have newGame() function/method
 
 
@@ -35,9 +39,3 @@ how many won etc.. -> player class
 
 
 ---------
-lets go easy...
-- do not go for full screen application
-- get players name
-- add highlight to the winning moves
-- enhance input.
-    - use arrows keys and highlight to get move input
