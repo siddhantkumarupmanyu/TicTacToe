@@ -81,8 +81,8 @@ class Board:
         if self._defaultCell != self._matrix[0][0] == self._matrix[1][1] == self._matrix[2][2]:
             self._winningCells = [(0, 0), (1, 1), (2, 2)]
             return True
-        elif self._defaultCell != self._matrix[1][2] == self._matrix[1][1] == self._matrix[2][1]:
-            self._winningCells = [(1, 2), (1, 1), (2, 1)]
+        elif self._defaultCell != self._matrix[0][2] == self._matrix[1][1] == self._matrix[2][0]:
+            self._winningCells = [(0, 2), (1, 1), (2, 0)]
             return True
         return False
 
