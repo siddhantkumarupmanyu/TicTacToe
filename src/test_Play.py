@@ -1,8 +1,7 @@
 from typing import Tuple, Optional
 from unittest import TestCase
 
-from Board import Board
-from Cell import Mark
+from Board import Board, Mark
 from Play import Play
 from Player import Player
 from Renderer import Renderer

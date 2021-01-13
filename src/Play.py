@@ -1,16 +1,14 @@
 from typing import Tuple
 
-from Board import Board
-from Cell import Mark
+from Board import Board, Mark
 from Player import Player, PlayerObserver
 from Renderer import Renderer
+from Require import Require
 
 
 class Play(PlayerObserver):
-
-    # TODO: fail fast when player1.mark == player2.mark or any mark is default
-
     def __init__(self, player1: Player, player2: Player, board: Board, renderer: Renderer):
+        Require.that(player1.getMark() != player2.getMark(), "Both Players have same Mark")
         self._player1 = player1
         self._player2 = player2
         self._board = board

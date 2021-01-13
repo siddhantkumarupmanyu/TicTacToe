@@ -1,6 +1,7 @@
 from typing import List, Tuple
 
-from Cell import Mark
+from Board import Mark
+from Require import Require
 
 
 class PlayerObserver:
@@ -26,6 +27,7 @@ class Player(PlayerSubject):
 
     def __init__(self, playerName: str, mark: Mark):
         super().__init__()
+        Require.that(mark != Mark.DEFAULT, "Player Mark cannot be equal to Mark.DEFAULT")
         self._mark = mark
         self._playerName = playerName
         self._myMove = False
