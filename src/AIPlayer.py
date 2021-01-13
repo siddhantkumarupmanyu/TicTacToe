@@ -17,10 +17,6 @@ class AIPlayer(Player):
         else:
             self._opponentMark = Mark.CIRCLE
 
-    def setMyMove(self, myMove: bool):
-        super().setMyMove(myMove)
-        self.calculateMove()  # it runs a coroutine
-
     def getMove(self) -> Tuple[int, int]:
         tempBoard = self.board.getNewBoardAtCurrentPosition()
         value = self.getGoodValue(tempBoard)

@@ -3,6 +3,7 @@ from typing import Tuple, List
 from prompt_toolkit import print_formatted_text, HTML
 from prompt_toolkit.shortcuts import clear
 
+from AIPlayer import AIPlayer
 from Board import Board, Mark
 from Play import Play
 from Player import Player
@@ -144,7 +145,39 @@ class ConsoleInputTwoPlayers:
                 break
 
 
-def start():
+class ConsoleInputOnePlayerWithAI:
+
+    def __init__(self, player: Player, aiPlayer: AIPlayer):
+        self.player = player
+        self.aiPlayer = aiPlayer
+
+    def run(self):
+        global invalidMove
+        global gameEnded
+        while True:
+            playerMove = getMove(input(f"Enter move for {self.player.getPlayerName()} :- "))
+            while playerMove == (-1, -1):
+                playerMove = getMove(input(f"Error Please Re-enter for {self.player.getPlayerName()} :- "))
+            self.player.moveEvent(playerMove)
+
+            while invalidMove:
+                invalidMove = False
+                playerMove = getMove(input(f"Error Please Re-enter for {self.player.getPlayerName()} :- "))
+                while playerMove == (-1, -1):
+                    playerMove = getMove(input(f"Error Please Re-enter for {self.player.getPlayerName()} :- "))
+                self.player.moveEvent(playerMove)
+
+            if gameEnded:
+                break
+
+            move = self.aiPlayer.getMove()
+            self.aiPlayer.moveEvent(move)
+
+            if gameEnded:
+                break
+
+
+def startPlayers():
     renderer = ConsoleRenderer()
     board = Board()
     player1 = Player("Player 1", Mark.CROSS)
@@ -153,4 +186,16 @@ def start():
     play = Play(player1, player2, board, renderer)
 
     consoleInput = ConsoleInputTwoPlayers(player1, player2)
+    consoleInput.run()
+
+
+def startAI():
+    renderer = ConsoleRenderer()
+    board = Board()
+    player = Player("Player", Mark.CROSS)
+    aiPlayer = AIPlayer(Mark.CIRCLE, board)
+
+    play = Play(player, aiPlayer, board, renderer)
+
+    consoleInput = ConsoleInputOnePlayerWithAI(player, aiPlayer)
     consoleInput.run()
