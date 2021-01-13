@@ -1,48 +1,39 @@
+from typing import Tuple
+
 from Board import Board
 from Cell import Mark
-from Player import Player
+from Player import Player, PlayerObserver
 from Renderer import Renderer
 
 
-class Play:
+class Play(PlayerObserver):
+
+    # TODO: fail fast when player1.mark == player2.mark or any mark is default
 
     def __init__(self, player1: Player, player2: Player, board: Board, renderer: Renderer):
-
-        # TODO: fail fast when player1.mark == player2.mark or any mark is default
-
         self._player1 = player1
         self._player2 = player2
         self._board = board
         self._renderer = renderer
+        self._player1.register(self)
+        self._player2.register(self)
+        self._player1.setMyMove(True)
 
-    def start(self):
-        # TODO refactor this into smaller methods/ functions
+    def moveEvent(self, move: Tuple[int, int]):
+        currentPlayer = self._player1 if self._player1.isMyMove() else self._player2
+        if not self._validMove(move[0], move[1]):
+            self._renderer.invalidMove(currentPlayer, self._board, move)
+            return
+
+        self._board.setValueAt(move[0], move[1], currentPlayer.getMark())
+
+        self._player1.setMyMove(not self._player1.isMyMove())
+        self._player2.setMyMove(not self._player2.isMyMove())
+
         self._renderer.display(self._board, self._player1)
-        while True:
-            p1X, p1Y = self._player1.getMove()
-            while not self._validMove(p1X, p1Y):
-                self._renderer.invalidMove(self._player1, self._board, (p1X, p1Y))
-                p1X, p1Y = self._player1.getMove()
 
-            self._board.setValueAt(p1X, p1Y, self._player1.getMark())
-
-            self._renderer.display(self._board, self._player2)
-
-            if self._board.gameOver():
-                self._gameOver()
-                break
-
-            p2X, p2Y = self._player2.getMove()
-            while not self._validMove(p2X, p2Y):
-                self._renderer.invalidMove(self._player2, self._board, (p2X, p2Y))
-                p2X, p2Y = self._player2.getMove()
-            self._board.setValueAt(p2X, p2Y, self._player2.getMark())
-
-            self._renderer.display(self._board, self._player1)
-
-            if self._board.gameOver():
-                self._gameOver()
-                break
+        if self._board.gameOver():
+            self._gameOver()
 
     def _gameOver(self):
         winnerMark = self._board.winner()
@@ -59,7 +50,7 @@ class Play:
 
         self._renderer.won(self._board, winner)
 
-    def _validMove(self, x: int, y: int):
+    def _validMove(self, x: int, y: int):  # todo change to tuple
         if x > 2 or y > 2:
             return False
         if self._board.getValueAt(x, y) != Mark.DEFAULT:

@@ -17,6 +17,11 @@ Input(players: List[Players]) calls moveEvent on all players it has, appropriate
 
 
 ---------
+i guess it's players responsibility to only forward moveEvent if it's his move,
+and not play's to check every time if the move comes from right player
+
+
+---------
 
 refactor board class to take tuple instead of x, y
 refactor/remove Cell from board, create matrix with Mark.Default Values

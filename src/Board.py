@@ -21,7 +21,7 @@ class Board:
         ]
         self._matrix = tempMatrix
 
-    def setValueAt(self, x: int, y: int, value: Mark):
+    def setValueAt(self, x: int, y: int, value: Mark):  # todo take tuples
         # # TODO: add fail fast for x & y > 3
         self._matrix[x][y].setValue(value)
 
