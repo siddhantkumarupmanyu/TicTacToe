@@ -1,34 +1,25 @@
-refactor the whole project and implement better architecture
+refactor loop out of play class --->
+
+
+Implement Observer pattern in Play and Player class
+play class takes in two players and adds itself as a observer to those two
+player class has addObservers method
+play class implements newMove(move, player) method of observer interface
+
+play class also sets isMyMove to true in player class by calling method setMyMove()
+
+play class have moveEvent(xy: Tuple[int, int]):
+                    if(isMyMove):
+                        notifyObservers(xy, this)
+                        isMyMove = false
+
+Input(players: List[Players]) calls moveEvent on all players it has, appropriate one will forward it
+
 
 ---------
 
-Game Class: set all the values and creates immutables, have newGame() function/method
-
-
-Play class: takes in player1, player2, board, renderer
--play asks player for move
-    -player takes input from user and returns move
--play checks weather it is a valid move
-    -if not, again ask player for move -> recheck ->...
--check if any player has won
-    -if so give that info to the renderer
--call renderer for drawing the board
-
-Player1 goes always first in play class. but it a immutable class, therefore when creating new play, game class
-can create play class with players interchanged, therefore changing the turn of players
-
-
-Renderer: have setBoard method for setting current board
--maps given Mark to Display mark(img, string, etc)
--draws the appropriate things (who won, lose, etc) on screen
-
----------
-Can use finite state machine in Play class but right now it only increases the complexity.
-
-
-Should playerInterfaceInput know about player??? -> It could then display for which player it is asking the move for..??
-
-no need of nextPlayer in display fun in renderer
+refactor board class to take tuple instead of x, y
+refactor/remove Cell from board, create matrix with Mark.Default Values
 
 ---------
 Additional features
