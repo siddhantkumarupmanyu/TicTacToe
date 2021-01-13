@@ -1,30 +1,18 @@
-refactor loop out of play class --->
-
-
-Implement Observer pattern in Play and Player class
-play class takes in two players and adds itself as a observer to those two
-player class has addObservers method
-play class implements newMove(move, player) method of observer interface
-
-play class also sets isMyMove to true in player class by calling method setMyMove()
-
-play class have moveEvent(xy: Tuple[int, int]):
-                    if(isMyMove):
-                        notifyObservers(xy, this)
-                        isMyMove = false
-
 Input(players: List[Players]) calls moveEvent on all players it has, appropriate one will forward it
+    - Not exactly like that....
+    - I guess they will be more like ConsoleInput..
+    - I can abstract the idea used in ConsoleInput.. and extend classes from it
 
 
 ---------
 i guess it's players responsibility to only forward moveEvent if it's his move,
-and not play's to check every time if the move comes from right player
+and not play's to check every time if the move comes from right player,
+but it assumes it comes from right player (player that actually have turn in play class)
 
 
 ---------
 
 refactor board class to take tuple instead of x, y
-refactor/remove Cell from board, create matrix with Mark.Default Values
 
 ---------
 Additional features
