@@ -1,36 +1,41 @@
-import copy
 import math
 from typing import Tuple
 
-from Board import Board
-from Cell import Mark
-from Player import PlayerInputInterface
+from Board import Board, Mark
+from Player import Player
 
 
 # todo: refactor and optimize this
+# todo : fix this
+class AIPlayer(Player):
 
-class AIInput(PlayerInputInterface):
-
-    def __init__(self, myMark: Mark, board: Board):
+    def __init__(self, mark: Mark, board: Board):
+        super().__init__("AI Player", mark)
         self.board = board
-        self.myMark = myMark
-        if myMark == Mark.CIRCLE:
-            self.opponentMark = Mark.CROSS
+        if mark == Mark.CIRCLE:
+            self._opponentMark = Mark.CROSS
         else:
-            self.opponentMark = Mark.CIRCLE
+            self._opponentMark = Mark.CIRCLE
+
+    def setMyMove(self, myMove: bool):
+        super().setMyMove(myMove)
+        self.calculateMove()  # it runs a coroutine
 
     def getMove(self) -> Tuple[int, int]:
-        tempBoard = copy.deepcopy(self.board)
+        tempBoard = self.board.getNewBoardAtCurrentPosition()
         value = self.getGoodValue(tempBoard)
         return value
+
+    # todo improve performance using coroutines/asyncio
+    # run child no of coroutines and await for them to finish at the end and then compare values
 
     def getGoodValue(self, board: Board):
         children = self.getValues(board)
         maxEvalChild = children[0]
         maxEval = -math.inf
         for child in children:
-            tempBoard = copy.deepcopy(board)
-            tempBoard.setValueAt(child[0], child[1], self.myMark)
+            tempBoard = board.getNewBoardAtCurrentPosition()
+            tempBoard.setValueAt(child[0], child[1], self._mark)
             evaluated = self.minMax(tempBoard, False)
             if evaluated > maxEval:
                 maxEvalChild = child
@@ -46,8 +51,8 @@ class AIInput(PlayerInputInterface):
             maxEval = -math.inf
             children = self.getValues(board)
             for child in children:
-                tempBoard = copy.deepcopy(board)
-                tempBoard.setValueAt(child[0], child[1], self.myMark)
+                tempBoard = board.getNewBoardAtCurrentPosition()
+                tempBoard.setValueAt(child[0], child[1], self._mark)
                 evaluated = self.minMax(tempBoard, False)
                 maxEval = max(maxEval, evaluated)
             return maxEval - 1
@@ -55,8 +60,8 @@ class AIInput(PlayerInputInterface):
             minEval = math.inf
             children = self.getValues(board)
             for child in children:
-                tempBoard = copy.deepcopy(board)
-                tempBoard.setValueAt(child[0], child[1], self.opponentMark)
+                tempBoard = board.getNewBoardAtCurrentPosition()
+                tempBoard.setValueAt(child[0], child[1], self._opponentMark)
                 evaluated = self.minMax(tempBoard, True)
                 minEval = min(minEval, evaluated)
             return minEval + 1
@@ -64,7 +69,7 @@ class AIInput(PlayerInputInterface):
     def staticEvaluation(self, board: Board) -> float:
         if board.winner() == Mark.DEFAULT:
             return 0.0
-        elif board.winner() == self.myMark:
+        elif board.winner() == self._mark:
             return 10
         else:
             return -10

@@ -16,6 +16,7 @@ class Play(PlayerObserver):
         self._player1.register(self)
         self._player2.register(self)
         self._player1.setMyMove(True)
+        self._renderer.display(self._board, self._player1)
 
     def moveEvent(self, move: Tuple[int, int]):
         currentPlayer = self._player1 if self._player1.isMyMove() else self._player2

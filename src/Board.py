@@ -1,3 +1,4 @@
+import copy
 from enum import Enum
 from typing import List, Tuple, Optional
 
@@ -110,3 +111,6 @@ class Board:
                 if self._matrix[i][j] != Mark.DEFAULT:
                     return False
         return True
+
+    def getNewBoardAtCurrentPosition(self) -> 'Board':
+        return copy.deepcopy(self)
