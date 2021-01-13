@@ -1,58 +1,64 @@
-from typing import List, Tuple
+from enum import Enum
+from typing import List, Tuple, Optional
 
-from Cell import Cell, Mark
+from Require import Require
 
 
-# board class should be immutable
+class Mark(Enum):
+    CIRCLE = -1
+    DEFAULT = 0
+    CROSS = 1
+
+
+# todo make board class immutable
 class Board:
 
     def __init__(self):
-        self._matrix: List[List[Cell]] = list()
-        self._defaultCell: Cell = Cell()
-        self._winner: Mark = Mark.DEFAULT
+        self._matrix: List[List[Mark]] = list()
+        self._winner: Optional[Mark] = None
         self._winningCells: List[Tuple[int, int]] = list()
         self.createMatrix()
 
     def createMatrix(self):
         tempMatrix = [
-            [Cell(), Cell(), Cell()],
-            [Cell(), Cell(), Cell()],
-            [Cell(), Cell(), Cell()]
+            [Mark.DEFAULT, Mark.DEFAULT, Mark.DEFAULT],
+            [Mark.DEFAULT, Mark.DEFAULT, Mark.DEFAULT],
+            [Mark.DEFAULT, Mark.DEFAULT, Mark.DEFAULT]
         ]
         self._matrix = tempMatrix
 
-    def setValueAt(self, x: int, y: int, value: Mark):  # todo take tuples
-        # # TODO: add fail fast for x & y > 3
-        self._matrix[x][y].setValue(value)
+    # todo take tuple instead of x and y
+    def setValueAt(self, x: int, y: int, value: Mark):
+        Require.that(x < 3 and y < 3, "x and y values Out of Bound")
+        Require.that(self._matrix[x][y] == Mark.DEFAULT, "Cell is Already filled")
+        self._matrix[x][y] = value
 
     def getValueAt(self, x: int, y: int) -> Mark:
-        # # TODO: add fail fast for x & y > 3
-        return self._matrix[x][y].getValue()
+        Require.that(x < 3 and y < 3, "x and y values Out of Bound")
+        return self._matrix[x][y]
 
     def winner(self) -> Mark:
         if self._winner is None:
-            if not self.gameOver():  # # TODO: replace with fail fast code
-                raise Exception("Game Is not over")
+            Require.that(self.gameOver(), "Game Is not over")
         return self._winner
 
     def getWinningCells(self) -> List[Tuple[int, int]]:
-        if self._winningCells is None:
-            if not self.gameOver():  # # TODO: replace with fail fast code
-                raise Exception("Game Is not over")
+        if len(self._winningCells) == 0:
+            Require.that(self.gameOver(), "Game Is not over")
         return self._winningCells
 
     def gameOver(self) -> bool:
         for i in range(3):
             if self._checkIfRowCellsAreEqual(i):
-                self._winner = self._matrix[i][0].getValue()
+                self._winner = self._matrix[i][0]
                 return True
 
             elif self._checkIfColumnCellsAreEqual(i):
-                self._winner = self._matrix[0][i].getValue()
+                self._winner = self._matrix[0][i]
                 return True
 
         if self._checkIfDiagonalCellsEqual():
-            self._winner = self._matrix[1][1].getValue()
+            self._winner = self._matrix[1][1]
             return True
 
         if self._isGameDraw():
@@ -66,22 +72,22 @@ class Board:
     # may be the function name can be a bit more clear to express what they does
 
     def _checkIfRowCellsAreEqual(self, rowNum: int) -> bool:
-        if self._defaultCell != self._matrix[rowNum][0] == self._matrix[rowNum][1] == self._matrix[rowNum][2]:
+        if Mark.DEFAULT != self._matrix[rowNum][0] == self._matrix[rowNum][1] == self._matrix[rowNum][2]:
             self._winningCells = [(rowNum, 0), (rowNum, 1), (rowNum, 2)]
             return True
         return False
 
     def _checkIfColumnCellsAreEqual(self, colNum: int) -> bool:
-        if self._defaultCell != self._matrix[0][colNum] == self._matrix[1][colNum] == self._matrix[2][colNum]:
+        if Mark.DEFAULT != self._matrix[0][colNum] == self._matrix[1][colNum] == self._matrix[2][colNum]:
             self._winningCells = [(0, colNum), (1, colNum), (2, colNum)]
             return True
         return False
 
     def _checkIfDiagonalCellsEqual(self) -> bool:
-        if self._defaultCell != self._matrix[0][0] == self._matrix[1][1] == self._matrix[2][2]:
+        if Mark.DEFAULT != self._matrix[0][0] == self._matrix[1][1] == self._matrix[2][2]:
             self._winningCells = [(0, 0), (1, 1), (2, 2)]
             return True
-        elif self._defaultCell != self._matrix[0][2] == self._matrix[1][1] == self._matrix[2][0]:
+        elif Mark.DEFAULT != self._matrix[0][2] == self._matrix[1][1] == self._matrix[2][0]:
             self._winningCells = [(0, 2), (1, 1), (2, 0)]
             return True
         return False
@@ -94,13 +100,13 @@ class Board:
     def isFull(self):
         for i in range(3):
             for j in range(3):
-                if self._matrix[i][j].getValue() == Mark.DEFAULT:
+                if self._matrix[i][j] == Mark.DEFAULT:
                     return False
         return True
 
     def isEmpty(self) -> bool:
         for i in range(3):
             for j in range(3):
-                if self._matrix[i][j].getValue() != Mark.DEFAULT:
+                if self._matrix[i][j] != Mark.DEFAULT:
                     return False
         return True

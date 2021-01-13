@@ -20,6 +20,8 @@ class PlayerSubject:
             observer.moveEvent(move)
 
 
+# i can test this but this class does not have too much things to test
+# leaving it for now
 class Player(PlayerSubject):
 
     def __init__(self, playerName: str, mark: Mark):

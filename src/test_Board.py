@@ -1,7 +1,6 @@
 from unittest import TestCase
 
-from Board import Board
-from Cell import Mark
+from Board import Board, Mark
 
 
 class TestBoard(TestCase):
@@ -58,9 +57,9 @@ class TestBoard(TestCase):
 
     def test_crossWinsTheGame_Diagonal2(self):
         board = Board()
-        board.setValueAt(1, 2, Mark.CROSS)
+        board.setValueAt(0, 2, Mark.CROSS)
         board.setValueAt(1, 1, Mark.CROSS)
-        board.setValueAt(2, 1, Mark.CROSS)
+        board.setValueAt(2, 0, Mark.CROSS)
         self.assertTrue(board.gameOver())
         self.assertEqual(Mark.CROSS, board.winner())
 
