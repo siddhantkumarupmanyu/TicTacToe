@@ -1,4 +1,6 @@
+import concurrent
 import math
+from concurrent.futures.thread import ThreadPoolExecutor
 from typing import Tuple
 
 from Board import Board, Mark
@@ -22,18 +24,18 @@ class AIPlayer(Player):
         value = self.getGoodValue(tempBoard)
         return value
 
-    # todo improve performance using coroutines/asyncio
-    # run child no of coroutines and await for them to finish at the end and then compare values
-    # event loop with work for our case as we only want synchronous execution
-
     def getGoodValue(self, board: Board):
         children = self.getValues(board)
         maxEval = -math.inf
         evaluated = list()
-        for child in children:
-            tempBoard = board.getNewBoardAtCurrentPosition()
-            tempBoard.setValueAt(child[0], child[1], self._mark)
-            evaluated.append(self.minMax(tempBoard, False, 0))
+        with ThreadPoolExecutor(max_workers=len(children)) as executor:
+            futures = []
+            for child in children:
+                tempBoard = board.getNewBoardAtCurrentPosition()
+                tempBoard.setValueAt(child[0], child[1], self._mark)
+                futures.append(executor.submit(self.minMax, board=tempBoard, maximizingPlayer=False, depth=0))
+            for future in concurrent.futures.as_completed(futures):
+                evaluated.append(future.result())
 
         maxChildIndex = 0
         for i, evaluation in enumerate(evaluated):
@@ -99,7 +101,7 @@ if __name__ == '__main__':
         board = Board()
         aiPlayer = AIPlayer(Mark.CIRCLE, board)
 
-        board.setValueAt(random.randint(0, 2), random.randint(0, 2), aiPlayer.getMark())
+        board.setValueAt(random.randint(0, 2), random.randint(0, 2), Mark.CROSS)
 
         oldTime = current_milli_time()
 

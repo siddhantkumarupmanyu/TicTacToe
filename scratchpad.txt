@@ -11,8 +11,18 @@ but it assumes it comes from right player (player that actually have turn in pla
 
 
 ---------
-coroutines did not improved AiPlayer performance guess will have to use executor or threadpool
+coroutines did not improved AiPlayer performance.
+-using ThreadPoolExecutor
 
+No gain in performance instead flashy values are returned
+
+
+---------
+thing to note
+values returned by running getGoodValue are mostly all same,
+why even i am running for all children,
+just compare two and if they are equal go for third,
+and then compare...
 
 ---------
 
