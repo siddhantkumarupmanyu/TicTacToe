@@ -33,7 +33,7 @@ class AIPlayer(Player):
         for child in children:
             tempBoard = board.getNewBoardAtCurrentPosition()
             tempBoard.setValueAt(child[0], child[1], self._mark)
-            evaluated.append(self.minMax(tempBoard, False))
+            evaluated.append(self.minMax(tempBoard, False, 0))
 
         maxChildIndex = 0
         for i, evaluation in enumerate(evaluated):
@@ -45,10 +45,10 @@ class AIPlayer(Player):
 
         return maxEvalChild
 
-    def minMax(self, board: Board, maximizingPlayer):
+    def minMax(self, board: Board, maximizingPlayer: bool, depth: int):
 
         if board.gameOver():
-            return self.staticEvaluation(board)
+            return self.staticEvaluation(board, depth)
 
         if maximizingPlayer:
             maxEval = -math.inf
@@ -56,26 +56,26 @@ class AIPlayer(Player):
             for child in children:
                 tempBoard = board.getNewBoardAtCurrentPosition()
                 tempBoard.setValueAt(child[0], child[1], self._mark)
-                evaluated = self.minMax(tempBoard, False)
+                evaluated = self.minMax(tempBoard, False, depth + 1)
                 maxEval = max(maxEval, evaluated)
-            return maxEval - 1
+            return maxEval
         else:
             minEval = math.inf
             children = self.getValues(board)
             for child in children:
                 tempBoard = board.getNewBoardAtCurrentPosition()
                 tempBoard.setValueAt(child[0], child[1], self._opponentMark)
-                evaluated = self.minMax(tempBoard, True)
+                evaluated = self.minMax(tempBoard, True, depth + 1)
                 minEval = min(minEval, evaluated)
-            return minEval + 1
+            return minEval
 
-    def staticEvaluation(self, board: Board) -> float:
+    def staticEvaluation(self, board: Board, depth: int):
         if board.winner() == Mark.DEFAULT:
             return 0.0
         elif board.winner() == self._mark:
-            return 10
+            return 10 - depth
         else:
-            return -10
+            return -10 + depth
 
     def getValues(self, board):
         values = list()
