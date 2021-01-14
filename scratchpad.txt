@@ -11,6 +11,10 @@ but it assumes it comes from right player (player that actually have turn in pla
 
 
 ---------
+coroutines did not improved AiPlayer performance guess will have to use executor or threadpool
+
+
+---------
 
 refactor board class to take tuple instead of x, y
 
