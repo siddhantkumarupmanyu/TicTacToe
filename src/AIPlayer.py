@@ -1,6 +1,4 @@
-import concurrent
 import math
-from concurrent.futures.thread import ThreadPoolExecutor
 from typing import Tuple
 
 from Board import Board, Mark
@@ -8,7 +6,6 @@ from Player import Player
 
 
 # todo: refactor and optimize this
-# todo : fix this
 class AIPlayer(Player):
 
     def __init__(self, mark: Mark, board: Board):
@@ -28,14 +25,10 @@ class AIPlayer(Player):
         children = self.getValues(board)
         maxEval = -math.inf
         evaluated = list()
-        with ThreadPoolExecutor(max_workers=len(children)) as executor:
-            futures = []
-            for child in children:
-                tempBoard = board.getNewBoardAtCurrentPosition()
-                tempBoard.setValueAt(child[0], child[1], self._mark)
-                futures.append(executor.submit(self.minMax, board=tempBoard, maximizingPlayer=False, depth=0))
-            for future in concurrent.futures.as_completed(futures):
-                evaluated.append(future.result())
+        for child in children:
+            tempBoard = board.getNewBoardAtCurrentPosition()
+            tempBoard.setValueAt(child[0], child[1], self._mark)
+            evaluated.append(self.minMax(tempBoard, False, 0))
 
         maxChildIndex = 0
         for i, evaluation in enumerate(evaluated):

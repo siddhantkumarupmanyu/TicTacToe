@@ -14,7 +14,7 @@ but it assumes it comes from right player (player that actually have turn in pla
 coroutines did not improved AiPlayer performance.
 -using ThreadPoolExecutor
 
-No gain in performance instead flashy values are returned
+No gain in performance instead flaky values are returned
 
 
 ---------
