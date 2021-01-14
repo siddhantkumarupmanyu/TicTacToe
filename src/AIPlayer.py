@@ -1,4 +1,3 @@
-import asyncio
 import math
 from typing import Tuple
 
@@ -20,39 +19,36 @@ class AIPlayer(Player):
 
     def getMove(self) -> Tuple[int, int]:
         tempBoard = self.board.getNewBoardAtCurrentPosition()
-        # value = self.getGoodValue(tempBoard)
-        loop = asyncio.get_event_loop()
-        value = loop.run_until_complete(self.getGoodValue(tempBoard))
+        value = self.getGoodValue(tempBoard)
         return value
 
     # todo improve performance using coroutines/asyncio
     # run child no of coroutines and await for them to finish at the end and then compare values
     # event loop with work for our case as we only want synchronous execution
 
-    async def getGoodValue(self, board: Board):
+    def getGoodValue(self, board: Board):
         children = self.getValues(board)
-        # maxEvalChild = children[0]
         maxEval = -math.inf
-        coroutines = list()
+        evaluated = list()
         for child in children:
             tempBoard = board.getNewBoardAtCurrentPosition()
             tempBoard.setValueAt(child[0], child[1], self._mark)
-            coroutines.append(self.minMax(tempBoard, False))
-            # if evaluated > maxEval:
-            #     maxEvalChild = child
-            # maxEval = max(maxEval, evaluated)
-        evaluated = await asyncio.gather(*coroutines)
+            evaluated.append(self.minMax(tempBoard, False))
+
         maxChildIndex = 0
         for i, evaluation in enumerate(evaluated):
             if evaluation > maxEval:
-                maxEval = evaluation
                 maxChildIndex = i
-        return children[maxChildIndex]
+                maxEval = evaluation
 
-    async def minMax(self, board: Board, maximizingPlayer):
+        maxEvalChild = children[maxChildIndex]
+
+        return maxEvalChild
+
+    def minMax(self, board: Board, maximizingPlayer):
 
         if board.gameOver():
-            return await self.staticEvaluation(board)
+            return self.staticEvaluation(board)
 
         if maximizingPlayer:
             maxEval = -math.inf
@@ -60,7 +56,7 @@ class AIPlayer(Player):
             for child in children:
                 tempBoard = board.getNewBoardAtCurrentPosition()
                 tempBoard.setValueAt(child[0], child[1], self._mark)
-                evaluated = await self.minMax(tempBoard, False)
+                evaluated = self.minMax(tempBoard, False)
                 maxEval = max(maxEval, evaluated)
             return maxEval - 1
         else:
@@ -69,13 +65,13 @@ class AIPlayer(Player):
             for child in children:
                 tempBoard = board.getNewBoardAtCurrentPosition()
                 tempBoard.setValueAt(child[0], child[1], self._opponentMark)
-                evaluated = await self.minMax(tempBoard, True)
+                evaluated = self.minMax(tempBoard, True)
                 minEval = min(minEval, evaluated)
             return minEval + 1
 
-    async def staticEvaluation(self, board: Board):
+    def staticEvaluation(self, board: Board) -> float:
         if board.winner() == Mark.DEFAULT:
-            return 0
+            return 0.0
         elif board.winner() == self._mark:
             return 10
         else:
