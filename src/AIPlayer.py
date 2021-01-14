@@ -24,6 +24,7 @@ class AIPlayer(Player):
 
     # todo improve performance using coroutines/asyncio
     # run child no of coroutines and await for them to finish at the end and then compare values
+    # event loop with work for our case as we only want synchronous execution
 
     def getGoodValue(self, board: Board):
         children = self.getValues(board)
@@ -77,3 +78,34 @@ class AIPlayer(Player):
                 if board.getValueAt(i, j) == Mark.DEFAULT:
                     values.append((i, j))
         return values
+
+
+if __name__ == '__main__':
+    import time
+    import random
+
+    current_milli_time = lambda: int(round(time.time() * 1000))
+
+
+    def _benchmarkSecond():
+        print("Ai is Second in turn")
+
+        board = Board()
+        aiPlayer = AIPlayer(Mark.CIRCLE, board)
+
+        board.setValueAt(random.randint(0, 2), random.randint(0, 2), aiPlayer.getMark())
+
+        oldTime = current_milli_time()
+
+        move = aiPlayer.getMove()
+
+        print(f"Took {current_milli_time() - oldTime} ms")
+
+
+    def _benchmarkFirst():
+        # does not make any sense will always return same value
+        # so can just store it
+        pass
+
+
+    _benchmarkSecond()
