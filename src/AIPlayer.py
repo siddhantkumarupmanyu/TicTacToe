@@ -5,7 +5,12 @@ from Board import Board, Mark
 from Player import Player
 
 
-# todo: refactor and optimize this
+# Note: values returned by running getGoodValue are mostly all same, why even i am running for all children OR maybe
+# just store the best moves of positions for the first turn after player e.g if board has only (0,0) meaning its a
+# firstMove of Ai so return bestCalculatedMove for this from pre-calculated values
+# same for other first moves by ai
+
+# todo: refactor
 class AIPlayer(Player):
 
     def __init__(self, mark: Mark, board: Board):

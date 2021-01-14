@@ -9,21 +9,6 @@ i guess it's players responsibility to only forward moveEvent if it's his move,
 and not play's to check every time if the move comes from right player,
 but it assumes it comes from right player (player that actually have turn in play class)
 
-
----------
-coroutines did not improved AiPlayer performance.
--using ThreadPoolExecutor
-
-No gain in performance instead flaky values are returned
-
-
----------
-thing to note
-values returned by running getGoodValue are mostly all same,
-why even i am running for all children,
-just compare two and if they are equal go for third,
-and then compare...
-
 ---------
 
 refactor board class to take tuple instead of x, y
