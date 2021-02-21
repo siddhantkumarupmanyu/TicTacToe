@@ -5,7 +5,7 @@ from Player import Player
 
 
 class Renderer:
-    def displayBoard(self, board: Board, nextMove: Player):
+    def displayBoardWithNextMove(self, board: Board, nextMove: Player):
         pass
 
     def displayWinner(self, board: Board, player: Player):

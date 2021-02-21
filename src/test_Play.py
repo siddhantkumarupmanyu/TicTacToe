@@ -16,8 +16,8 @@ class TestPlayRenderer(Renderer):
         self.lastInvalidPlayer = None
         self.lastInvalidMove = None
 
-    def displayBoard(self, board: Board, nextMove: Player):
-        super().displayBoard(board, nextMove)
+    def displayBoardWithNextMove(self, board: Board, nextMove: Player):
+        super().displayBoardWithNextMove(board, nextMove)
 
     def displayWinner(self, board: Board, player: Player):
         self.winner = player

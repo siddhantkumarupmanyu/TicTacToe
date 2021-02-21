@@ -16,7 +16,7 @@ class Play(PlayerObserver):
         self._player1.register(self)
         self._player2.register(self)
         self._player1.setMyMove(True)
-        self._renderer.displayBoard(self._board, self._player1)
+        self._renderer.displayBoardWithNextMove(self._board, self._player1)
 
     def moveEvent(self, move: Tuple[int, int]):
         currentPlayer = self._player1 if self._player1.isMyMove() else self._player2
@@ -29,7 +29,7 @@ class Play(PlayerObserver):
         self._player1.setMyMove(not self._player1.isMyMove())
         self._player2.setMyMove(not self._player2.isMyMove())
 
-        self._renderer.displayBoard(self._board, self._player1)
+        self._renderer.displayBoardWithNextMove(self._board, self._player1)
 
         if self._board.gameOver():
             self._gameOver()
