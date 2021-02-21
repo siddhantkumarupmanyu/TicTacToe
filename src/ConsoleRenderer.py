@@ -43,7 +43,7 @@ class ConsoleRenderer(Renderer):
         self._consoleInput.stop()
 
     def tie(self, board: Board, player1: Player, player2: Player):
-        print("\n")
+        self._displayBoard(board)
         print(
             f"Its a TIE between {self._getIconFromMark(player1.getMark())} and {self._getIconFromMark(player2.getMark())}"
         )
