@@ -80,5 +80,5 @@ class ConsoleRenderer(Renderer):
 
     def _formatWinningCell(self, aMark, value):
         if value:
-            return f"'{aMark}'"
+            return f"\033[31m{aMark}\033[39m"
         return aMark
