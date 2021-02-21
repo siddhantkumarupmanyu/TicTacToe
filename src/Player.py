@@ -9,28 +9,14 @@ class PlayerObserver:
         pass
 
 
-class PlayerSubject:
-    def __init__(self):
-        self._observers: List[PlayerObserver] = list()
-
-    def register(self, observer: PlayerObserver):
-        self._observers.append(observer)
-
-    def notify(self, move: Tuple[int, int]):
-        for observer in self._observers:
-            observer.moveEvent(move)
-
-
-# i can test this but this class does not have too much things to test
-# leaving it for now
-class Player(PlayerSubject):
+class Player:
 
     def __init__(self, playerName: str, mark: Mark):
-        super().__init__()
-        Require.that(mark != Mark.DEFAULT, "Player Mark cannot be equal to Mark.DEFAULT")
+        Require.that(mark != Mark.DEFAULT, "Player Mark should not be Mark.DEFAULT")
         self._mark = mark
         self._playerName = playerName
         self._myMove = False
+        self._observers: List[PlayerObserver] = list()
 
     def setMyMove(self, myMove: bool):
         self._myMove = myMove
@@ -38,12 +24,19 @@ class Player(PlayerSubject):
     def isMyMove(self) -> bool:
         return self._myMove
 
-    def moveEvent(self, move):
+    def moveEvent(self, move: Tuple[int, int]):
         if self._myMove:
-            self.notify(move)
+            self._notify(move)
 
     def getMark(self) -> Mark:
         return self._mark
 
     def getPlayerName(self):
         return self._playerName
+
+    def register(self, observer: PlayerObserver):
+        self._observers.append(observer)
+
+    def _notify(self, move: Tuple[int, int]):
+        for observer in self._observers:
+            observer.moveEvent(move)
