@@ -8,7 +8,7 @@ from Require import Require
 
 class Play(PlayerObserver):
     def __init__(self, player1: Player, player2: Player, board: Board, renderer: Renderer):
-        Require.that(player1.getMark() != player2.getMark(), "Both Players have same Mark")
+        Require.that(player1.getMark() != player2.getMark(), "Both Players should not have same Mark")
         self._player1 = player1
         self._player2 = player2
         self._board = board

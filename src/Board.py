@@ -15,28 +15,18 @@ class Mark(Enum):
 class Board:
 
     def __init__(self):
-        self._matrix: List[List[Mark]] = list()
+        self._createMatrix()
         self._winner: Optional[Mark] = None
         self._winningCells: List[Tuple[int, int]] = list()
-        self.createMatrix()
-
-    def createMatrix(self):
-        tempMatrix = [
-            [Mark.DEFAULT, Mark.DEFAULT, Mark.DEFAULT],
-            [Mark.DEFAULT, Mark.DEFAULT, Mark.DEFAULT],
-            [Mark.DEFAULT, Mark.DEFAULT, Mark.DEFAULT]
-        ]
-        self._matrix = tempMatrix
-
-    # todo take tuple instead of x and y
-    def setValueAt(self, x: int, y: int, value: Mark):
-        Require.that(x < 3 and y < 3, "x and y values Out of Bound")
-        Require.that(self._matrix[x][y] == Mark.DEFAULT, "Cell is Already filled")
-        self._matrix[x][y] = value
 
     def getValueAt(self, x: int, y: int) -> Mark:
-        Require.that(x < 3 and y < 3, "x and y values Out of Bound")
+        Require.that(x < 3 and y < 3, f"Value should be less than 3 is X=[{x}] Y=[{y}]")
         return self._matrix[x][y]
+
+    def setValueAt(self, x: int, y: int, value: Mark):
+        Require.that(x < 3 and y < 3, f"Value should be less than 3 is X=[{x}] Y=[{y}]")
+        Require.that(self._matrix[x][y] == Mark.DEFAULT, "Cell should be Empty")
+        self._matrix[x][y] = value
 
     def winner(self) -> Mark:
         if self._winner is None:
@@ -114,3 +104,11 @@ class Board:
 
     def getNewBoardAtCurrentPosition(self) -> 'Board':
         return copy.deepcopy(self)
+
+    def _createMatrix(self):
+        tempMatrix = [
+            [Mark.DEFAULT, Mark.DEFAULT, Mark.DEFAULT],
+            [Mark.DEFAULT, Mark.DEFAULT, Mark.DEFAULT],
+            [Mark.DEFAULT, Mark.DEFAULT, Mark.DEFAULT]
+        ]
+        self._matrix = tempMatrix
