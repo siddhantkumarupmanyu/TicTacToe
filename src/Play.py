@@ -49,8 +49,10 @@ class Play(PlayerObserver):
 
         self._renderer.displayWinner(self._board, winner)
 
-    def _validMove(self, x: int, y: int):  # todo change to tuple
+    def _validMove(self, x: int, y: int):
         if x > 2 or y > 2:
+            return False
+        if x < 0 or y < 0:
             return False
         if self._board.getValueAt(x, y) != Mark.DEFAULT:
             return False

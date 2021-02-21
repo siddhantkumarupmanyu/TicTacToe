@@ -50,6 +50,16 @@ class TestPlay(TestCase):
         testRenderer = TestPlayRenderer()
         play = Play(player1, player2, board, testRenderer)
 
+    def test_InvalidMove_Underflow(self):
+        player1.moveEvent((-1, 1))
+        self.assertEqual((-1, 1), testRenderer.lastInvalidMove)
+        self.assertEqual(player1, testRenderer.lastInvalidPlayer)
+        player1.moveEvent((0, 0))
+
+        player2.moveEvent((-4, 2))
+        self.assertEqual((-4, 2), testRenderer.lastInvalidMove)
+        self.assertEqual(player2, testRenderer.lastInvalidPlayer)
+
     def test_InvalidMove_OutOfBoundMove(self):
         player1.moveEvent((3, 3))
         self.assertEqual((3, 3), testRenderer.lastInvalidMove)
