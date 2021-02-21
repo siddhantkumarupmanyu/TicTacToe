@@ -76,6 +76,7 @@ class TestBoard(TestCase):
         board.setValueAt(2, 2, Mark.CROSS)
 
         self.assertTrue(board.gameOver())
+        self.assertTrue(board.isFull())
         self.assertEqual(Mark.DEFAULT, board.winner())
 
     def test_rowWinningCells(self):

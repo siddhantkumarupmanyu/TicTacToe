@@ -11,7 +11,6 @@ class Mark(Enum):
     CROSS = 1
 
 
-# todo make board class immutable
 class Board:
 
     def __init__(self):
@@ -30,51 +29,67 @@ class Board:
 
     def winner(self) -> Mark:
         if self._winner is None:
-            Require.that(self.gameOver(), "Game Is not over")
+            Require.that(self.gameOver(), "Game should be over")
         return self._winner
 
     def getWinningCells(self) -> List[Tuple[int, int]]:
         if len(self._winningCells) == 0:
-            Require.that(self.gameOver(), "Game Is not over")
+            Require.that(self.gameOver(), "Game should be over")
         return self._winningCells
 
     def gameOver(self) -> bool:
-        for i in range(3):
-            if self._checkIfRowCellsAreEqual(i):
-                self._winner = self._matrix[i][0]
-                return True
-
-            elif self._checkIfColumnCellsAreEqual(i):
-                self._winner = self._matrix[0][i]
-                return True
-
-        if self._checkIfDiagonalCellsEqual():
-            self._winner = self._matrix[1][1]
+        if self._winnerFound():
             return True
 
-        if self._isGameDraw():
+        elif self._gameDraw():
             self._winner = Mark.DEFAULT
             return True
 
         return False
 
-    # TODO: I think setting winning cells do not belong to these checking methods
-    # but if here where and how
-    # may be the function name can be a bit more clear to express what they does
+    def isFull(self) -> bool:
+        return self._foreachCellNot(lambda cell: cell == Mark.DEFAULT)
 
-    def _checkIfRowCellsAreEqual(self, rowNum: int) -> bool:
+    def isEmpty(self) -> bool:
+        return self._foreachCellNot(lambda cell: cell != Mark.DEFAULT)
+
+    def getNewBoardAtCurrentPosition(self) -> 'Board':
+        return copy.deepcopy(self)
+
+    def _foreachCellNot(self, condition) -> bool:
+        for i in range(3):
+            for j in range(3):
+                if condition(self._matrix[i][j]):
+                    return False
+        return True
+
+    def _winnerFound(self) -> bool:
+        for i in range(3):
+            if self._rowCellsEqual(i):
+                self._winner = self._matrix[i][0]
+                return True
+
+            elif self._columnCellsEqual(i):
+                self._winner = self._matrix[0][i]
+                return True
+
+        if self._diagonalCellsEqual():
+            self._winner = self._matrix[1][1]
+            return True
+
+    def _rowCellsEqual(self, rowNum: int) -> bool:
         if Mark.DEFAULT != self._matrix[rowNum][0] == self._matrix[rowNum][1] == self._matrix[rowNum][2]:
             self._winningCells = [(rowNum, 0), (rowNum, 1), (rowNum, 2)]
             return True
         return False
 
-    def _checkIfColumnCellsAreEqual(self, colNum: int) -> bool:
+    def _columnCellsEqual(self, colNum: int) -> bool:
         if Mark.DEFAULT != self._matrix[0][colNum] == self._matrix[1][colNum] == self._matrix[2][colNum]:
             self._winningCells = [(0, colNum), (1, colNum), (2, colNum)]
             return True
         return False
 
-    def _checkIfDiagonalCellsEqual(self) -> bool:
+    def _diagonalCellsEqual(self) -> bool:
         if Mark.DEFAULT != self._matrix[0][0] == self._matrix[1][1] == self._matrix[2][2]:
             self._winningCells = [(0, 0), (1, 1), (2, 2)]
             return True
@@ -83,27 +98,10 @@ class Board:
             return True
         return False
 
-    def _isGameDraw(self):
+    def _gameDraw(self):
         if self.isFull():
             return True
         return False
-
-    def isFull(self):
-        for i in range(3):
-            for j in range(3):
-                if self._matrix[i][j] == Mark.DEFAULT:
-                    return False
-        return True
-
-    def isEmpty(self) -> bool:
-        for i in range(3):
-            for j in range(3):
-                if self._matrix[i][j] != Mark.DEFAULT:
-                    return False
-        return True
-
-    def getNewBoardAtCurrentPosition(self) -> 'Board':
-        return copy.deepcopy(self)
 
     def _createMatrix(self):
         tempMatrix = [
