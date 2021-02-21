@@ -20,10 +20,12 @@ class Board:
 
     def getValueAt(self, x: int, y: int) -> Mark:
         Require.that(x < 3 and y < 3, f"Value should be less than 3 is X=[{x}] Y=[{y}]")
+        Require.that(x > -1 and y > -1, f"Value should be less than -1 is X=[{x}] Y=[{y}]")
         return self._matrix[x][y]
 
     def setValueAt(self, x: int, y: int, value: Mark):
         Require.that(x < 3 and y < 3, f"Value should be less than 3 is X=[{x}] Y=[{y}]")
+        Require.that(x > -1 and y > -1, f"Value should be more than -1 is X=[{x}] Y=[{y}]")
         Require.that(self._matrix[x][y] == Mark.DEFAULT, "Cell should be Empty")
         self._matrix[x][y] = value
 
