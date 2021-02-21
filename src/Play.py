@@ -16,7 +16,7 @@ class Play(PlayerObserver):
         self._player1.register(self)
         self._player2.register(self)
         self._player1.setMyMove(True)
-        self._renderer.display(self._board, self._player1)
+        self._renderer.displayBoard(self._board, self._player1)
 
     def moveEvent(self, move: Tuple[int, int]):
         currentPlayer = self._player1 if self._player1.isMyMove() else self._player2
@@ -29,7 +29,7 @@ class Play(PlayerObserver):
         self._player1.setMyMove(not self._player1.isMyMove())
         self._player2.setMyMove(not self._player2.isMyMove())
 
-        self._renderer.display(self._board, self._player1)
+        self._renderer.displayBoard(self._board, self._player1)
 
         if self._board.gameOver():
             self._gameOver()
@@ -47,7 +47,7 @@ class Play(PlayerObserver):
         elif self._player2.getMark() == winnerMark:
             winner = self._player2
 
-        self._renderer.won(self._board, winner)
+        self._renderer.displayWinner(self._board, winner)
 
     def _validMove(self, x: int, y: int):  # todo change to tuple
         if x > 2 or y > 2:

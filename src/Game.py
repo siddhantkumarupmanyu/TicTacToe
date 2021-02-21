@@ -18,7 +18,7 @@ class ConsoleRenderer(Renderer):
 
     # todo refactor this
 
-    def display(self, board: Board, nextMove: Player):
+    def displayBoard(self, board: Board, nextMove: Player):
         clear()
         print_formatted_text(
             f"{self._getStringForMark(board.getValueAt(0, 0))} | {self._getStringForMark(board.getValueAt(0, 1))} | {self._getStringForMark(board.getValueAt(0, 2))} \n")
@@ -28,7 +28,7 @@ class ConsoleRenderer(Renderer):
             f"{self._getStringForMark(board.getValueAt(2, 0))} | {self._getStringForMark(board.getValueAt(2, 1))} | {self._getStringForMark(board.getValueAt(2, 2))} \n")
 
     # todo:  refactor the code and remove as many hacks as possible; it does not matter in this class but still
-    def won(self, board: Board, player: Player):
+    def displayWinner(self, board: Board, player: Player):
         clear()
         winningCells = board.getWinningCells()
         print_formatted_text(

@@ -5,10 +5,10 @@ from Player import Player
 
 
 class Renderer:
-    def display(self, board: Board, nextMove: Player):
+    def displayBoard(self, board: Board, nextMove: Player):
         pass
 
-    def won(self, board: Board, player: Player):
+    def displayWinner(self, board: Board, player: Player):
         pass
 
     def tie(self, board: Board, player1: Player, player2: Player):
