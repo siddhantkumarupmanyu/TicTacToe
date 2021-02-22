@@ -22,9 +22,11 @@ class AIPlayer(Player):
             self._opponentMark = Mark.CIRCLE
 
     def getMove(self) -> Tuple[int, int]:
-        tempBoard = self.board.getNewBoardAtCurrentPosition()
-        value = self.getGoodValue(tempBoard)
-        return value
+        if not self.board.gameOver():
+            tempBoard = self.board.getNewBoardAtCurrentPosition()
+            value = self.getGoodValue(tempBoard)
+            return value
+        return (-1, -1)
 
     def getGoodValue(self, board: Board):
         children = self.getValues(board)

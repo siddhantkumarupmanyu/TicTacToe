@@ -6,6 +6,16 @@ from Board import Board, Mark
 
 class TestAIPlayer(TestCase):
 
+    def test_gameOver(self):
+        board = Board()
+        for i in range(3):
+            board.setValueAt(i, 0, Mark.CROSS)
+            board.setValueAt(i, 1, Mark.CROSS)
+            board.setValueAt(i, 2, Mark.CROSS)
+        aiInput = AIPlayer(Mark.CIRCLE, board)
+
+        self.assertEqual((-1, -1), aiInput.getMove())
+
     def test_case1(self):
         board = Board()
         board.setValueAt(0, 0, Mark.CROSS)
