@@ -46,6 +46,12 @@ class GuiRenderer(Renderer):
     def displayWinner(self, board: Board, player: Player):
         self._label['text'] = f"{player.getMark()} won"
         self._gameOver = True
+        for i, button in enumerate(self._buttons):
+            cell = SimpleParser.parseIntToTuple(i + 1)
+            value = self._getIconFromMark(board.getValueAt(cell[0], cell[1]))
+            button['text'] = value
+            if cell in board.getWinningCells():
+                button['foreground'] = "red"
 
     def tie(self, board: Board, player1: Player, player2: Player):
         self._label['text'] = f"It's a Tie"

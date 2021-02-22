@@ -1,3 +1,5 @@
+import time
+
 from AIPlayer import AIPlayer
 from Board import Mark
 from Player import Player
