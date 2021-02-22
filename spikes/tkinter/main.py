@@ -5,6 +5,7 @@ import tkinter as tk
 # One horizontal text unit is determined by the width of the character "0",
 # or the number zero, in the default system font.
 # Similarly, one vertical text unit is determined by the height of the character "0".
+from spikes.tkinter.GeometryManager.grid import gridSticky, grid
 from spikes.tkinter.address_form import createAddressFormShort
 from spikes.tkinter.events import keyEvent, buttonCommand, diceRoll
 from spikes.tkinter.temperatue_converter import runFahrenheit
@@ -43,7 +44,7 @@ if __name__ == '__main__':
     # packVertical()
     # packResponsive()
     # place()
-    # grid()
+    grid()
     # gridSticky()
     # createAddressForm()
     # createAddressFormShort()
@@ -51,4 +52,4 @@ if __name__ == '__main__':
     # buttonCommand()
     # diceRoll()
     # runFahrenheit()
-    simpleEditor()
+    # simpleEditor()

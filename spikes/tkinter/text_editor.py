@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter.filedialog import askopenfilename, asksaveasfilename
 
+
 def simpleEditor():
     def open_file():
         """Open a file for editing."""

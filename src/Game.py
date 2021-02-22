@@ -1,6 +1,8 @@
 from Board import Board, Mark
 from ConsoleInput import ConsoleInputTwoPlayers, ConsoleInputSinglePlayer
 from ConsoleRenderer import ConsoleRenderer
+from GuiInput import GuiInput
+from GuiRenderer import GuiRenderer
 from Play import Play
 from Player import Player
 
@@ -26,3 +28,14 @@ def startAI():
     play = Play(player, consoleInput.getAIPlayer(), board, renderer)
 
     consoleInput.run()
+
+
+def startGui():
+    board = Board()
+    player = Player("Player 1", Mark.CROSS)
+
+    guiInput = GuiInput(player, board)
+    renderer = GuiRenderer(guiInput)
+    play = Play(player, guiInput.getAIPlayer(), board, renderer)
+
+    renderer.runGui()
